@@ -13,5 +13,5 @@ dependencies {
 }
 
 tasks.named("jar", Jar::class).configure {
-    manifest.attributes["Premain-Class"] = "io.github.tropheusj.cichlid.CichlidAgent"
+    manifest.attributes["Premain-Class"] = "io.github.tropheusj.cichlid.impl.CichlidAgent"
 }

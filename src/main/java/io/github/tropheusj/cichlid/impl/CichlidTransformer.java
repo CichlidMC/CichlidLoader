@@ -1,4 +1,4 @@
-package io.github.tropheusj.cichlid;
+package io.github.tropheusj.cichlid.impl;
 
 import java.lang.instrument.ClassFileTransformer;
 import java.security.ProtectionDomain;
