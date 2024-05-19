@@ -1,6 +1,9 @@
 package io.github.tropheusj.cichlid.impl;
 
+import java.io.IOException;
 import java.lang.instrument.Instrumentation;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class CichlidAgent {
 	/*
@@ -17,7 +20,12 @@ public class CichlidAgent {
 		instrumentation.addTransformer(new CichlidTransformer());
 
 		CichlidPaths paths = CichlidPaths.get();
-
-
+		Path log = paths.logs().resolve("latest.txt");
+		try {
+			Files.createDirectories(log.getParent());
+			Files.writeString(log, "logged");
+		} catch (IOException e) {
+			System.out.println("error: " + e.getMessage());
+		}
 	}
 }
