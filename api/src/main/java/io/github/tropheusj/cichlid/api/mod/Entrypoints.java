@@ -3,7 +3,7 @@ package io.github.tropheusj.cichlid.api.mod;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import io.github.tropheusj.cichlid.api.CichlidLoader;
+import io.github.tropheusj.cichlid.api.entrypoint.EntrypointHelper;
 import io.github.tropheusj.cichlid.api.entrypoint.PreLaunchEntrypoint;
 
 /**
@@ -12,13 +12,13 @@ import io.github.tropheusj.cichlid.api.entrypoint.PreLaunchEntrypoint;
  * One mod may provide multiple implementations of a single entrypoint.
  * Each entrypoint is handled uniquely, but typically the class will be instantiated and a method will be invoked.
  * @see PreLaunchEntrypoint
- * @see CichlidLoader#invokeEntrypoint(Class, String, BiConsumer)
+ * @see EntrypointHelper#invoke(Class, String, BiConsumer)
  */
 public interface Entrypoints {
 	/**
 	 * Get the entrypoint for the given key.
 	 * <br>
-	 * Example: {@code get("pre-launch") -> "com.example.mymod.MyModPreLaunch"}
+	 * Example: {@code get("pre-launch") -> ["com.example.mymod.MyModPreLaunch"]}
 	 */
 	List<String> get(String key);
 

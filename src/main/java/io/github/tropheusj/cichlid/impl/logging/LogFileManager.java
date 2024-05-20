@@ -40,12 +40,11 @@ public class LogFileManager {
 	static {
 		try {
 			// make sure dir exists
-			Path logs = CichlidPaths.INSTANCE.logs();
-			Files.createDirectories(logs);
+			Files.createDirectories(CichlidPaths.LOGS);
 			// shift all files down 1
 			for (Entry<String, String> entry : RENAMES.entrySet()) {
-				Path from = logs.resolve(entry.getKey());
-				Path to = logs.resolve(entry.getValue());
+				Path from = CichlidPaths.LOGS.resolve(entry.getKey());
+				Path to = CichlidPaths.LOGS.resolve(entry.getValue());
 
 				if (Files.exists(from)) {
 					if (entry.getValue().equals(DELETE_MARKER)) {
@@ -56,7 +55,7 @@ public class LogFileManager {
 				}
 			}
 			// open writer, this creates a new file
-			Path latest = logs.resolve(LATEST);
+			Path latest = CichlidPaths.LOGS.resolve(LATEST);
 			output = Files.newBufferedWriter(latest);
 			// shutdown hook to close the file
 			Runtime.getRuntime().addShutdownHook(new Thread(new FileCloser()));

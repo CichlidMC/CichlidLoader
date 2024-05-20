@@ -4,6 +4,11 @@ import java.util.regex.Pattern;
 
 public interface Mod {
 	/**
+	 * File name for a mod's metadata, located in the root of the jar.
+	 */
+	String METADATA = "cichlid.mod.json";
+
+	/**
 	 * Regex for valid mod IDs. No length limit, cannot be empty. Valid characters: a-z, 0-9, and _.
 	 */
 	Pattern ID_REGEX = Pattern.compile("[a-z0-9_]+");
