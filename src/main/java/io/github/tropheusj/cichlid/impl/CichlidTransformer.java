@@ -3,11 +3,14 @@ package io.github.tropheusj.cichlid.impl;
 import java.lang.instrument.ClassFileTransformer;
 import java.security.ProtectionDomain;
 
+import io.github.tropheusj.cichlid.api.logging.CichlidLogger;
+
 public class CichlidTransformer implements ClassFileTransformer {
+	private static final CichlidLogger logger = CichlidLogger.get(CichlidTransformer.class);
 	@Override
 	public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
 							ProtectionDomain protectionDomain, byte[] classfileBuffer) {
-		System.out.println("Transforming class " + className + " on classloader " + loader);
+		logger.info("Transforming class " + className + " on classloader " + loader);
 		return classfileBuffer;
 	}
 }
