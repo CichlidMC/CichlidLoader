@@ -12,9 +12,9 @@ import io.github.tropheusj.cichlid.api.entrypoint.PreLaunchEntrypoint;
  */
 public interface CichlidLogger {
 	/**
-	 * Logged message format. Example: {@code [13:30:59] [Worker-Thread-19] [INFO]: <message>}
+	 * Logged message format. Example: {@code [13:30:59] [Worker-Thread-19] [CichlidLogger] [INFO]: <message>}
 	 */
-	String FORMAT = "[%s] [%s] [%s]: [%s]";
+	String FORMAT = "[%s] [%s] [%s] [%s]: %s";
 
 	void info(String message);
 	void warn(String message);

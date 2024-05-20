@@ -32,7 +32,7 @@ public record CichlidLoggerImpl(String name) implements CichlidLogger {
 	private void write(String level, String message) {
 		String time = timeFormat.format(new Date());
 		String thread = Thread.currentThread().getName();
-		String formatted = FORMAT.formatted(time, thread, level, message);
+		String formatted = FORMAT.formatted(time, thread, this.name, level, message);
 		LogFileManager.write(formatted);
 	}
 }

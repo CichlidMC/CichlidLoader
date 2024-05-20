@@ -2,37 +2,36 @@ package io.github.tropheusj.cichlid.impl.logging;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.stream.Stream;
+import java.util.Map.Entry;
 
 import io.github.tropheusj.cichlid.api.CichlidUtils;
 import io.github.tropheusj.cichlid.impl.CichlidPaths;
 
 /**
- *
+ * Manages Cichlid's log files, deleting and renaming old ones.
  */
 public class LogFileManager {
 	public static final int LOGS_TO_KEEP = 3;
-	public static final String LATEST = "latest.txt";
-	public static final String OLDER_FORMAT = "latest-%d.txt";
+	public static final String LATEST = "log.txt";
+	public static final String OLDER_FORMAT = "log-%d.txt";
 	public static final String DELETE_MARKER = "delete";
 
-	// latest -> latest-1
-	// latest-1 -> latest-2
-	// latest-LOGS_TO_KEEP -> delete
+	// log -> log-1
+	// log-1 -> log-2
+	// log-LOGS_TO_KEEP -> delete
+	// iteration order matters, oldest to newest
 	public static final Map<String, String> RENAMES = CichlidUtils.make(() -> {
-		Map<String, String> map = new HashMap<>();
-		map.put(LATEST, OLDER_FORMAT.formatted(1));
-		for (int i = 1; i < LOGS_TO_KEEP; i++) {
-			map.put(OLDER_FORMAT.formatted(i), OLDER_FORMAT.formatted(i + 1));
-		}
+		Map<String, String> map = new LinkedHashMap<>();
 		map.put(OLDER_FORMAT.formatted(LOGS_TO_KEEP), DELETE_MARKER);
+		for (int i = LOGS_TO_KEEP; i > 0; i--) {
+			map.put(OLDER_FORMAT.formatted(i - 1), OLDER_FORMAT.formatted(i));
+		}
+		map.put(LATEST, OLDER_FORMAT.formatted(1));
 		return map;
 	});
 
@@ -44,42 +43,23 @@ public class LogFileManager {
 			Path logs = CichlidPaths.INSTANCE.logs();
 			Files.createDirectories(logs);
 			// shift all files down 1
-			try (Stream<Path> stream = Files.list(logs)) {
-				stream.forEach(file -> {
-					String name = file.getFileName().toString();
-					String renamed = RENAMES.get(name);
-					if (renamed == null)
-						return;
+			for (Entry<String, String> entry : RENAMES.entrySet()) {
+				Path from = logs.resolve(entry.getKey());
+				Path to = logs.resolve(entry.getValue());
 
-					try {
-						if (renamed.equals(DELETE_MARKER)) {
-							Files.delete(file);
-						} else {
-							Path target = file.resolveSibling(renamed);
-							Files.move(file, target);
-						}
-					} catch (IOException e) {
-						throw new RuntimeException(e);
+				if (Files.exists(from)) {
+					if (entry.getValue().equals(DELETE_MARKER)) {
+						Files.delete(from);
+					} else {
+						Files.move(from, to);
 					}
-				});
+				}
 			}
 			// open writer, this creates a new file
 			Path latest = logs.resolve(LATEST);
 			output = Files.newBufferedWriter(latest);
 			// shutdown hook to close the file
 			Runtime.getRuntime().addShutdownHook(new Thread(new FileCloser()));
-
-			// set up the game log
-			if (GAME_LOG != null) {
-				// old log, copy to temp file
-				if (Files.exists(GAME_LOG)) {
-					Files.move(GAME_LOG, TEMP_GAME_LOG);
-				}
-			} else {
-				// not provided, don't write to it
-				gameOutput = new BufferedWriter(new StringWriter());
-				gameOutput.close();
-			}
 		} catch (IOException | InvalidPathException e) {
 			throw new RuntimeException("Error initializing Cichlid logging", e);
 		}
