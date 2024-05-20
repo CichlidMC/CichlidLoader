@@ -5,6 +5,9 @@ import java.lang.instrument.Instrumentation;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import io.github.tropheusj.cichlid.api.CichlidLoader;
+import io.github.tropheusj.cichlid.api.entrypoint.PreLaunchEntrypoint;
+
 public class CichlidAgent {
 	/*
 	steps:
@@ -27,5 +30,7 @@ public class CichlidAgent {
 		} catch (IOException e) {
 			System.out.println("error: " + e.getMessage());
 		}
+
+		CichlidLoader.INSTANCE.invokeEntrypoint(PreLaunchEntrypoint.class, PreLaunchEntrypoint.KEY, PreLaunchEntrypoint::preLaunch);
 	}
 }
