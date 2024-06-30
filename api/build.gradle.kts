@@ -3,7 +3,7 @@ plugins {
 }
 
 base.archivesName = "Cichlid"
-group = "io.github.tropheusj"
+group = "io.github.cichlidmc"
 version = properties["version"]!!
 
 repositories {

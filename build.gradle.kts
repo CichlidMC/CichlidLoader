@@ -3,7 +3,7 @@ plugins {
     id("java-library")
 }
 
-group = "io.github.tropheusj"
+group = "io.github.cichlidmc"
 version = properties["version"]!!
 
 repositories {
@@ -21,9 +21,9 @@ tasks.named("jar", Jar::class).configure {
 
 tasks.named("shadowJar", com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class) {
     archiveClassifier = ""
-    manifest.attributes["Premain-Class"] = "io.github.tropheusj.cichlid.impl.CichlidAgent"
+    manifest.attributes["Premain-Class"] = "io.github.cichlidmc.cichlid_loader.impl.CichlidAgent"
 
-    relocate("com.google", "io.github.tropheusj.cichlid.impl.shadow.google")
+    relocate("com.google", "io.github.cichlidmc.cichlid_loader.impl.shadow.google")
 }
 
 tasks.named("assemble").configure {
