@@ -5,12 +5,9 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import io.github.cichlidmc.cichlid_loader.api.CichlidLoader;
-import io.github.cichlidmc.cichlid_loader.api.logging.CichlidLogger;
 import io.github.cichlidmc.cichlid_loader.api.mod.Mod;
 
 public class EntrypointHelper {
-	private static final CichlidLogger logger = CichlidLogger.get(EntrypointHelper.class);
-
 	/**
 	 * Invoke the given entrypoint on all mods.
 	 * <br>
@@ -46,7 +43,6 @@ public class EntrypointHelper {
 		if (list.isEmpty())
 			return;
 
-		logger.info("Invoking '" + key + "' entrypoint on " + list.size() + " mod(s)...");
 		for (Mod mod : list) {
 			List<String> classNames = mod.entrypoints().get(key);
 			for (String className : classNames) {

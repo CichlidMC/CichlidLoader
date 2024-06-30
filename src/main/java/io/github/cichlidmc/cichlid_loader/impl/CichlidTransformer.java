@@ -3,7 +3,7 @@ package io.github.cichlidmc.cichlid_loader.impl;
 import java.lang.instrument.ClassFileTransformer;
 import java.security.ProtectionDomain;
 
-import io.github.cichlidmc.cichlid_loader.api.logging.CichlidLogger;
+import io.github.cichlidmc.cichlid_loader.impl.logging.CichlidLogger;
 
 public class CichlidTransformer implements ClassFileTransformer {
 	private static final CichlidLogger logger = CichlidLogger.get(CichlidTransformer.class);

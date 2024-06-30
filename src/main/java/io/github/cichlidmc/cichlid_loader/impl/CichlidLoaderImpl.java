@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import io.github.cichlidmc.cichlid_loader.api.CichlidLoader;
-import io.github.cichlidmc.cichlid_loader.api.logging.CichlidLogger;
+import io.github.cichlidmc.cichlid_loader.impl.logging.CichlidLogger;
 import io.github.cichlidmc.cichlid_loader.api.mod.Mod;
 
 @SuppressWarnings("unused") // Constructed with reflection in CichlidLoader

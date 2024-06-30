@@ -1,4 +1,4 @@
-package io.github.cichlidmc.cichlid_loader.impl.logging;
+package io.github.cichlidmc.cichlid_loader.impl.logging.impl.fallback;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

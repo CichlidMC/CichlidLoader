@@ -1,12 +1,12 @@
-package io.github.cichlidmc.cichlid_loader.impl.logging;
+package io.github.cichlidmc.cichlid_loader.impl.logging.impl.fallback;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import io.github.cichlidmc.cichlid_loader.api.logging.CichlidLogger;
+import io.github.cichlidmc.cichlid_loader.impl.logging.CichlidLogger;
 
-@SuppressWarnings("unused") // constructed with reflection in CichlidLogger
-public record CichlidLoggerImpl(String name) implements CichlidLogger {
+public record FallbackLoggerImpl(String name) implements CichlidLogger {
+	private static final String format = "[%s] [%s] [%s] [%s]: %s";
 	private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
 	@Override
@@ -24,15 +24,10 @@ public record CichlidLoggerImpl(String name) implements CichlidLogger {
 		this.write("ERROR", message);
 	}
 
-	@Override
-	public void fatal(String message) {
-		this.write("FATAL", message);
-	}
-
 	private void write(String level, String message) {
 		String time = timeFormat.format(new Date());
 		String thread = Thread.currentThread().getName();
-		String formatted = FORMAT.formatted(time, thread, this.name, level, message);
+		String formatted = format.formatted(time, thread, this.name, level, message);
 		LogFileManager.write(formatted);
 	}
 }

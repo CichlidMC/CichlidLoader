@@ -5,7 +5,7 @@ import java.util.List;
 
 import io.github.cichlidmc.cichlid_loader.api.entrypoint.EntrypointHelper;
 import io.github.cichlidmc.cichlid_loader.api.entrypoint.PreLaunchEntrypoint;
-import io.github.cichlidmc.cichlid_loader.api.logging.CichlidLogger;
+import io.github.cichlidmc.cichlid_loader.impl.logging.CichlidLogger;
 import io.github.cichlidmc.cichlid_loader.impl.mod.LoadableMod;
 import io.github.cichlidmc.cichlid_loader.impl.mod.ModLoading;
 
