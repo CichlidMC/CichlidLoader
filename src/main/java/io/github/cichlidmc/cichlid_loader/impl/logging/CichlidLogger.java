@@ -3,16 +3,16 @@ package io.github.cichlidmc.cichlid_loader.impl.logging;
 import java.util.function.Function;
 
 import io.github.cichlidmc.cichlid_loader.api.CichlidUtils;
-import io.github.cichlidmc.cichlid_loader.impl.logging.impl.Slf4jLoggerImpl;
+import io.github.cichlidmc.cichlid_loader.impl.logging.impl.Log4jLoggerImpl;
 import io.github.cichlidmc.cichlid_loader.impl.logging.impl.fallback.FallbackLoggerImpl;
 
 public interface CichlidLogger {
 	Function<String, CichlidLogger> FACTORY = CichlidUtils.make(() -> {
 		try {
-			return Slf4jLoggerImpl::new;
+			return Log4jLoggerImpl::new;
 		} catch (Throwable t) {
 			FallbackLoggerImpl logger = new FallbackLoggerImpl(CichlidLogger.class.getSimpleName());
-			logger.info("Slf4j not present, using fallback logger");
+			logger.info("Log4j not present, using fallback logger");
 			return FallbackLoggerImpl::new;
 		}
 	});

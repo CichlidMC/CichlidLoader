@@ -1,14 +1,14 @@
 package io.github.cichlidmc.cichlid_loader.impl.logging.impl;
 
 import io.github.cichlidmc.cichlid_loader.impl.logging.CichlidLogger;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public class Slf4jLoggerImpl implements CichlidLogger {
+public class Log4jLoggerImpl implements CichlidLogger {
 	private final Logger logger;
 
-	public Slf4jLoggerImpl(String name) {
-		this.logger = LoggerFactory.getLogger(name);
+	public Log4jLoggerImpl(String name) {
+		this.logger = LogManager.getLogger(name);
 	}
 
 	@Override

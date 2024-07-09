@@ -13,7 +13,7 @@ repositories {
 dependencies {
     implementation(project(":api"))
     implementation("com.google.code.gson:gson:2.11.0")
-    compileOnly("org.slf4j:slf4j-api:2.0.9")
+    compileOnly("org.apache.logging.log4j:log4j-api:2.23.1")
 }
 
 tasks.named("jar", Jar::class).configure {
