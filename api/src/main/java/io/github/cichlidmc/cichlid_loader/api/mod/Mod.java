@@ -1,58 +1,15 @@
 package io.github.cichlidmc.cichlid_loader.api.mod;
 
-import java.util.regex.Pattern;
+import java.nio.file.Path;
+import java.util.Optional;
 
 public interface Mod {
-	/**
-	 * File name for a mod's metadata, located in the root of the jar.
-	 */
-	String METADATA = "cichlid.mod.json";
+	ModMetadata metadata();
 
 	/**
-	 * Regex for valid mod IDs. No length limit, cannot be empty. Valid characters: a-z, 0-9, and _.
+	 * Root path to resources provided by this mod. May be empty if none exist.
+	 * For a jar file, this would be the root.
+	 * This may be expensive to call, ex. opening a new FileSystem on a jar file.
 	 */
-	Pattern ID_REGEX = Pattern.compile("[a-z0-9_]+");
-
-	/**
-	 * The unique ID of this mod. Only one mod with a given ID can be loaded.
-	 * @see #ID_REGEX
-	 */
-	String id();
-
-	/**
-	 * The fully formatted name of this mod. Only disallowed characters are line breaks.
-	 */
-	String name();
-
-	/**
-	 * The version of this mod.
-	 */
-	String version();
-
-	/**
-	 * Description of this mod. No restrictions, may be multi-line.
-	 */
-	String description();
-
-	/**
-	 * The credits of this mod. Authors, Artists, etc.
-	 * @see Credits
-	 */
-	Credits credits();
-
-	/**
-	 * The entrypoints of this mod.
-	 * @see Entrypoints
-	 */
-	Entrypoints entrypoints();
-
-	/**
-	 * A formatted string that contains both the name and ID of this mod.
-	 * This is useful for clearly showing a mod to users, ex. in the case of an error.
-	 * <br>
-	 * Example: {@code 'My Mod' (ID: 'mymod')}
-	 */
-	default String blame() {
-		return "'" + this.name() + "' (ID: '" + this.id() + "')";
-	}
+	Optional<Path> resources();
 }

@@ -39,12 +39,12 @@ public class EntrypointHelper {
 	 */
 	public static <T> void invokeSafe(Class<T> clazz, String key, BiConsumer<T, Mod> consumer,
 									  Consumer<EntrypointException> errorConsumer) {
-		List<Mod> list = CichlidLoader.INSTANCE.allMods().stream().filter(mod -> mod.entrypoints().has(key)).toList();
+		List<Mod> list = CichlidLoader.INSTANCE.allMods().stream().filter(mod -> mod.metadata().entrypoints().has(key)).toList();
 		if (list.isEmpty())
 			return;
 
 		for (Mod mod : list) {
-			List<String> classNames = mod.entrypoints().get(key);
+			List<String> classNames = mod.metadata().entrypoints().get(key);
 			for (String className : classNames) {
 				try {
 					Class<?> implClass = Class.forName(className);

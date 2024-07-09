@@ -5,8 +5,8 @@ import java.util.List;
 
 import io.github.cichlidmc.cichlid_loader.api.entrypoint.EntrypointHelper;
 import io.github.cichlidmc.cichlid_loader.api.entrypoint.PreLaunchEntrypoint;
+import io.github.cichlidmc.cichlid_loader.api.mod.Mod;
 import io.github.cichlidmc.cichlid_loader.impl.logging.CichlidLogger;
-import io.github.cichlidmc.cichlid_loader.impl.mod.LoadableMod;
 import io.github.cichlidmc.cichlid_loader.impl.mod.ModLoading;
 
 public class CichlidAgent {
@@ -23,11 +23,11 @@ public class CichlidAgent {
 		logger.info("Cichlid initializing!");
 		instrumentation.addTransformer(new CichlidTransformer());
 
-		List<LoadableMod> mods = ModLoading.run();
+		List<Mod> mods = ModLoading.run();
 		if (!mods.isEmpty()) {
 			logger.info("Loading " + mods.size() + " mods:");
-			for (LoadableMod mod : mods) {
-				logger.info("\t- " + mod.mod().id());
+			for (Mod mod : mods) {
+				logger.info("\t- " + mod.metadata().id());
 			}
 			mods.forEach(mod -> instrumentation.appendToSystemClassLoaderSearch(mod.file()));
 		}

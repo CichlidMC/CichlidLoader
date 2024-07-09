@@ -11,6 +11,6 @@ public class EntrypointException extends RuntimeException {
 	}
 
 	private static String makeMessage(Mod mod, String key) {
-		return "Error invoking entrypoint '" + key + "' on mod " + mod.blame();
+		return "Error invoking entrypoint '" + key + "' on mod " + mod.metadata().blame();
 	}
 }

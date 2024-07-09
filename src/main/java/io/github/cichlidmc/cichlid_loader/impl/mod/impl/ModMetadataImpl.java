@@ -6,11 +6,12 @@ import com.google.gson.JsonSyntaxException;
 import io.github.cichlidmc.cichlid_loader.api.mod.Credits;
 import io.github.cichlidmc.cichlid_loader.api.mod.Entrypoints;
 import io.github.cichlidmc.cichlid_loader.api.mod.Mod;
+import io.github.cichlidmc.cichlid_loader.api.mod.ModMetadata;
 import io.github.cichlidmc.cichlid_loader.impl.JsonUtils;
 
-public record ModImpl(String id, String name, String version, String description,
-					  Credits credits, Entrypoints entrypoints) implements Mod {
-	public static ModImpl fromJson(JsonElement element) throws JsonSyntaxException {
+public record ModMetadataImpl(String id, String name, String version, String description,
+							  Credits credits, Entrypoints entrypoints) implements ModMetadata {
+	public static ModMetadataImpl fromJson(JsonElement element) throws JsonSyntaxException {
 		if (!(element instanceof JsonObject json))
 			throw new JsonSyntaxException("Not an object");
 
@@ -21,6 +22,6 @@ public record ModImpl(String id, String name, String version, String description
 		Credits credits = CreditsImpl.fromJson(json.get("credits"));
 		Entrypoints entrypoints = EntrypointsImpl.fromJson(json.get("entrypoints"));
 
-		return new ModImpl(id, name, version, description, credits, entrypoints);
+		return new ModMetadataImpl(id, name, version, description, credits, entrypoints);
 	}
 }
