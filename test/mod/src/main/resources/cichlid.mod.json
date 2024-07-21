@@ -1,0 +1,9 @@
+{
+  "id": "cichlid_test_mod",
+  "name": "Cichlid Test Mod",
+  "version": "1.0.0",
+  "description": "Test mod for Cichlid",
+  "entrypoints": {
+    "pre_launch": "io.github.cichlidmc.test_mod.TestPreLaunch"
+  }
+}

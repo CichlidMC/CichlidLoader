@@ -1,0 +1,10 @@
+{
+  "id": "test_plugin",
+  "name": "Test Plugin",
+  "version": "1.0.0",
+  "description": "Test Plugin Description",
+  "credits": {
+    "CichlidMC": "Author"
+  },
+  "plugin_class": "io.github.cichlidmc.test_plugin.TestPlugin"
+}
