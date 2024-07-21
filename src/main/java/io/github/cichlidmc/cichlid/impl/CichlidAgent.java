@@ -58,7 +58,7 @@ public class CichlidAgent {
 
 		private static OutputStream getLogOutputStream(Consumer<Throwable> suppressedErrors) {
 			try {
-				Path file = CichlidPaths.LOGS.resolve("catastrophe.log");
+				Path file = CichlidPaths.ROOT.resolve("catastrophe.txt");
 				Files.deleteIfExists(file);
 				return Files.newOutputStream(file, StandardOpenOption.CREATE);
 			} catch (Throwable t) {

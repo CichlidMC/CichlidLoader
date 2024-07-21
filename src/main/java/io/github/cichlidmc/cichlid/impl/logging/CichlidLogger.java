@@ -4,7 +4,7 @@ import java.util.function.Function;
 
 import io.github.cichlidmc.cichlid.api.CichlidInternals;
 import io.github.cichlidmc.cichlid.impl.logging.impl.Log4jLoggerImpl;
-import io.github.cichlidmc.cichlid.impl.logging.impl.fallback.FallbackLoggerImpl;
+import io.github.cichlidmc.cichlid.impl.logging.impl.FallbackLoggerImpl;
 
 public interface CichlidLogger {
 	Function<String, CichlidLogger> FACTORY = CichlidInternals.make(() -> {
@@ -13,7 +13,7 @@ public interface CichlidLogger {
 			return Log4jLoggerImpl::new;
 		} catch (Throwable t) {
 			FallbackLoggerImpl logger = new FallbackLoggerImpl(CichlidLogger.class.getSimpleName());
-			logger.info("Log4j not present, using fallback logger");
+			logger.info("Using fallback logger");
 			return FallbackLoggerImpl::new;
 		}
 	});
