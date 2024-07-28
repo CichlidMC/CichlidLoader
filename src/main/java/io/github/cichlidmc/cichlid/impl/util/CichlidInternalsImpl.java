@@ -1,10 +1,10 @@
 package io.github.cichlidmc.cichlid.impl.util;
 
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.Set;
 
-import com.google.gson.JsonElement;
 import io.github.cichlidmc.cichlid.api.CichlidInternals;
 import io.github.cichlidmc.cichlid.api.Metadata;
 import io.github.cichlidmc.cichlid.api.Mod;
@@ -47,12 +47,12 @@ public class CichlidInternalsImpl implements CichlidInternals {
 	}
 
 	@Override
-	public ModMetadata readModMetadata(JsonElement json) {
-		return ModMetadataImpl.fromJson(json);
+	public ModMetadata readModMetadata(InputStream stream) {
+		return ModMetadataImpl.fromJson(stream);
 	}
 
 	@Override
 	public ModMetadata readModMetadata(Path file) {
-		return ModMetadataImpl.fromJsonFile(file);
+		return ModMetadataImpl.fromJson(file);
 	}
 }

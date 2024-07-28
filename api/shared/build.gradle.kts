@@ -12,5 +12,4 @@ repositories {
 
 dependencies {
     compileOnlyApi("org.jetbrains:annotations:24.1.0")
-    api("com.google.code.gson:gson:2.11.0")
 }

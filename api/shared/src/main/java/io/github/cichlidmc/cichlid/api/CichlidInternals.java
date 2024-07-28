@@ -1,12 +1,12 @@
 package io.github.cichlidmc.cichlid.api;
 
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import com.google.gson.JsonElement;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
@@ -36,7 +36,7 @@ public interface CichlidInternals {
 
 	// mod metadata
 
-	ModMetadata readModMetadata(JsonElement json);
+	ModMetadata readModMetadata(InputStream stream);
 	ModMetadata readModMetadata(Path file);
 
 	// static utils

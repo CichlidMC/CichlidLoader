@@ -1,8 +1,7 @@
 package io.github.cichlidmc.cichlid.api;
 
+import java.io.InputStream;
 import java.nio.file.Path;
-
-import com.google.gson.JsonElement;
 
 /**
  * Mod-specific metadata.
@@ -15,16 +14,16 @@ public interface ModMetadata extends Metadata {
 	Entrypoints entrypoints();
 
 	/**
-	 * Try to parse mod metadata from the provided json.
+	 * Try to parse mod metadata from json read from the given stream.
 	 */
-	static ModMetadata fromJson(JsonElement json) {
-		return CichlidInternals.INSTANCE.readModMetadata(json);
+	static ModMetadata fromJson(InputStream stream) {
+		return CichlidInternals.INSTANCE.readModMetadata(stream);
 	}
 
 	/**
 	 * Try to parse mod metadata from json in the provided file.
 	 */
-	static ModMetadata fromJsonFile(Path file) {
+	static ModMetadata fromJson(Path file) {
 		return CichlidInternals.INSTANCE.readModMetadata(file);
 	}
 }

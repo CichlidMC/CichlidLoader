@@ -3,7 +3,6 @@ package io.github.cichlidmc.cichlid.impl.loadable.plugin.builtin;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -11,8 +10,6 @@ import java.util.Optional;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import io.github.cichlidmc.cichlid.api.Metadata;
 import io.github.cichlidmc.cichlid.api.Mod;
 import io.github.cichlidmc.cichlid.api.ModMetadata;
@@ -61,8 +58,7 @@ public class StandardJarPlugin implements CichlidPlugin {
 				return null;
 
 			InputStream stream = jar.getInputStream(metadataEntry);
-			JsonElement json = JsonParser.parseReader(new InputStreamReader(stream));
-			ModMetadata metadata = ModMetadata.fromJson(json);
+			ModMetadata metadata = ModMetadata.fromJson(stream);
 
 			Mod mod = new JarModImpl(metadata, path);
 			return new LoadableMod(mod, path.toString(), jar);

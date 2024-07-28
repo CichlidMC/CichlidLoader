@@ -43,12 +43,16 @@ public class ModMetadataImpl extends MetadataImpl implements ModMetadata {
 		return new ModMetadataImpl(metadata, entrypoints);
 	}
 
-	public static ModMetadata fromJsonFile(Path file) {
+	public static ModMetadata fromJson(Path file) {
 		try (InputStream stream = Files.newInputStream(file)) {
 			JsonElement json = JsonParser.parseReader(new InputStreamReader(stream));
 			return fromJson(json);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static ModMetadata fromJson(InputStream stream) {
+		return fromJson(JsonParser.parseReader(new InputStreamReader(stream)));
 	}
 }
