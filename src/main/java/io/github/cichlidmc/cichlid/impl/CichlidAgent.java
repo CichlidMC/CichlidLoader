@@ -23,6 +23,9 @@ public class CichlidAgent {
 				t.addSuppressed(t2);
 				handleCatastrophe(t);
 			}
+
+			// cancel the launch
+			System.exit(1);
 		}
 	}
 
