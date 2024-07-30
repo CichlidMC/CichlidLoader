@@ -15,5 +15,5 @@ dependencies {
 }
 
 tasks.named("jar", Jar::class).configure {
-    archiveExtension = "clm"
+    archiveExtension = "cld"
 }

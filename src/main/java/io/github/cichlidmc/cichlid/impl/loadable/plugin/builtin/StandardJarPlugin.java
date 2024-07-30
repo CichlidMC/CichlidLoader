@@ -25,11 +25,14 @@ import io.github.cichlidmc.cichlid.impl.util.FileUtils;
 import io.github.cichlidmc.cichlid.impl.util.Lazy;
 
 public class StandardJarPlugin implements CichlidPlugin {
+	public static final String EXTENSION = ".cld";
+	public static final String MOD_METADATA = "cichlid.mod.json";
+
 	public static final PluginMetadata METADATA = new PluginMetadataImpl(
 			"standard",
-			"Standard .clm Plugin",
+			"Standard " + EXTENSION + " Plugin",
 			CichlidLoader.metadata().version(),
-			"Built-in plugin for loading standard .clm Cichlid mods",
+			"Built-in plugin for loading standard " + EXTENSION + " Cichlid mods",
 			CichlidMetadata.CREDITS,
 			StandardJarPlugin.class.getName()
 	);
@@ -37,9 +40,6 @@ public class StandardJarPlugin implements CichlidPlugin {
 	public static final CichlidPlugin INSTANCE = new StandardJarPlugin();
 	public static final PluginHolder HOLDER = new PluginHolder(INSTANCE, METADATA);
 	public static final LoadablePlugin LOADABLE = new LoadablePlugin.BuiltIn(HOLDER);
-
-	public static final String EXTENSION = ".clm";
-	public static final String MOD_METADATA = "cichlid.mod.json";
 
 	@Override
 	public LoadableMod loadMod(Path path) {
