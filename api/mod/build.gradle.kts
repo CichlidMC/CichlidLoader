@@ -1,8 +1,9 @@
 plugins {
     id("java-library")
+    id("maven-publish")
 }
 
-base.archivesName = "CichlidModApi"
+base.archivesName = "CichlidApi"
 group = "io.github.cichlidmc"
 version = properties["version"]!!
 
