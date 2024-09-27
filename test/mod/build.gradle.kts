@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":mod-api"))
+    implementation(project(":"))
 }
 
 tasks.named("jar", Jar::class).configure {

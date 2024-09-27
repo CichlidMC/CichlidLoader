@@ -18,9 +18,7 @@ val shade: Configuration by configurations.creating {
 }
 
 dependencies {
-    shade(api(project(":mod-api"))!!)
-    shade(api(project(":plugin-api"))!!)
-    shade(api(project(":shared-api"))!!)
+    compileOnlyApi("org.jetbrains:annotations:24.1.0")
     shade(api("com.google.code.gson:gson:2.11.0")!!)
     compileOnly("org.apache.logging.log4j:log4j-api:2.23.1")
 }
@@ -36,6 +34,15 @@ tasks.named("processResources", ProcessResources::class) {
         expand(properties)
     }
 }
+
+java {
+    withSourcesJar()
+}
+
+// jar: slim (no dependencies)
+// shadowJar: fat (all dependencies)
+// apiJar: api (slim without impls and plugin-api)
+// pluginApiJar: plugin-api (slim without impls and api)
 
 tasks.named("jar", Jar::class).configure {
     archiveClassifier = "slim"
@@ -57,8 +64,26 @@ tasks.named("shadowJar", com.github.jengelman.gradle.plugins.shadow.tasks.Shadow
     }
 }
 
+tasks.register<Jar>("apiJar") {
+    dependsOn(tasks.named("jar"))
+    archiveClassifier = "api"
+    from(zipTree(files(tasks.named("jar")).singleFile))
+    include("**/api/**")
+    exclude("**/api/plugin/**")
+    includeEmptyDirs = false
+}
+
+tasks.register<Jar>("pluginApiJar") {
+    dependsOn(tasks.named("jar"))
+    archiveClassifier = "plugin-api"
+    from(zipTree(files(tasks.named("jar")).singleFile))
+    include("**/api/**")
+    exclude("**/api/mod/**")
+    includeEmptyDirs = false
+}
+
 tasks.named("assemble").configure {
-    dependsOn("shadowJar")
+    dependsOn("shadowJar", "apiJar", "pluginApiJar")
 }
 
 // output configuration for fat jar
@@ -70,31 +95,27 @@ artifacts {
     add("fat", tasks.named("shadowJar"))
 }
 
-// run allprojects last
-evaluationDependsOnChildren()
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            // default is project name, use archive name instead
+            artifactId = base.archivesName.get()
+            // includes main and sources jars
+            from(components["java"])
 
-allprojects {
-    if (path.contains("test")) return@allprojects
-
-    java {
-        withSourcesJar()
-    }
-
-    publishing {
-        publications {
-            create<MavenPublication>("mavenJava") {
-                // default is project name, use archive name instead
-                artifactId = base.archivesName.get()
-                // includes main and sources jars
-                from(components["java"])
+            artifact(tasks.named("apiJar")) {
+                classifier = "api"
+            }
+            artifact(tasks.named("pluginApiJar")) {
+                classifier = "plugin-api"
             }
         }
+    }
 
-        repositories {
-            maven("https://mvn.devos.one/snapshots") {
-                name = "devOS"
-                credentials(PasswordCredentials::class)
-            }
+    repositories {
+        maven("https://mvn.devos.one/snapshots") {
+            name = "devOS"
+            credentials(PasswordCredentials::class)
         }
     }
 }
