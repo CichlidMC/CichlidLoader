@@ -30,7 +30,7 @@ public class ModDiscovery {
 		// load additional mods from plugins
 		for (PluginHolder holder : plugins) {
 			try {
-				holder.plugin().loadAdditionalMods(mods::add);
+				holder.plugin.loadAdditionalMods(mods::add);
 			} catch (Throwable t) {
 				throw ModLoadingException.errorAdding(holder, t);
 			}
@@ -65,7 +65,7 @@ public class ModDiscovery {
 		Map<PluginHolder, LoadableMod> loaded = new HashMap<>();
 		for (PluginHolder holder : plugins) {
 			try {
-				LoadableMod mod = holder.plugin().loadMod(path);
+				LoadableMod mod = holder.plugin.loadMod(path);
 				if (mod != null) {
 					loaded.put(holder, mod);
 				}
@@ -100,12 +100,15 @@ public class ModDiscovery {
 			if (behavior == null)
 				return MOD;
 
-			return switch (behavior) {
-				case "mod" -> MOD;
-				case "scan" -> SCAN;
-				case "ignore" -> IGNORE;
-				default -> throw new IllegalStateException("Directory has an invalid load_behavior of '" + behavior + "': " + dir);
-			};
+			if (behavior.equals("mod")) {
+				return MOD;
+			} else if (behavior.equals("scan")) {
+				return SCAN;
+			} else if (behavior.equals("ignore")) {
+				return IGNORE;
+			} else {
+				throw new IllegalStateException("Directory has an invalid load_behavior of '" + behavior + "': " + dir);
+			}
 		}
 	}
 
@@ -119,7 +122,7 @@ public class ModDiscovery {
 		}
 
 		public static ModLoadingException errorLoading(PluginHolder holder, Path path, Throwable cause) {
-			return new ModLoadingException("Plugin '" + holder.metadata().id() + "' errored while loading mod at " + path, cause);
+			return new ModLoadingException("Plugin '" + holder.metadata.id() + "' errored while loading mod at " + path, cause);
 		}
 
 		public static ModLoadingException notLoaded(Path path) {
@@ -129,13 +132,13 @@ public class ModDiscovery {
 		public static ModLoadingException multipleLoaded(Map<PluginHolder, LoadableMod> map, Path path) {
 			StringBuilder builder = new StringBuilder("Multiple plugins loaded mod at ").append(path);
 			map.forEach(
-					(holder, mod) -> builder.append("\n\t- ").append(holder.metadata().id()).append(": ").append(mod)
+					(holder, mod) -> builder.append("\n\t- ").append(holder.metadata.id()).append(": ").append(mod)
 			);
 			return new ModLoadingException(builder.toString());
 		}
 
 		public static ModLoadingException errorAdding(PluginHolder holder, Throwable cause) {
-			return new ModLoadingException("Error while adding additional mods from plugin " + holder.metadata().id(), cause);
+			return new ModLoadingException("Error while adding additional mods from plugin " + holder.metadata.id(), cause);
 		}
 	}
 }

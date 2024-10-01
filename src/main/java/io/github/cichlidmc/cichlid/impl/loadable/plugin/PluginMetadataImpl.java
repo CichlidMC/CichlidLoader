@@ -27,9 +27,10 @@ public class PluginMetadataImpl extends MetadataImpl implements PluginMetadata {
 	}
 
 	public static PluginMetadata fromJson(JsonElement element) throws JsonSyntaxException {
-		if (!(element instanceof JsonObject json))
+		if (!(element instanceof JsonObject))
 			throw new JsonSyntaxException("Not an object");
 
+		JsonObject json = element.getAsJsonObject();
 		Metadata metadata = MetadataImpl.fromJson(json);
 		String pluginClass = JsonUtils.getString(json, "plugin_class");
 

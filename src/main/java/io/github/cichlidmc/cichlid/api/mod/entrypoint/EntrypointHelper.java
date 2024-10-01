@@ -3,6 +3,7 @@ package io.github.cichlidmc.cichlid.api.mod.entrypoint;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import io.github.cichlidmc.cichlid.api.mod.CichlidLoader;
 import io.github.cichlidmc.cichlid.api.Mod;
@@ -37,7 +38,10 @@ public class EntrypointHelper {
 	 */
 	public static <T> void invokeSafe(Class<T> clazz, String key, BiConsumer<T, Mod> consumer,
 									  Consumer<EntrypointException> errorConsumer) {
-		List<Mod> list = CichlidLoader.mods().stream().filter(mod -> mod.metadata().entrypoints().has(key)).toList();
+		List<Mod> list = CichlidLoader.mods().stream()
+				.filter(mod -> mod.metadata().entrypoints().has(key))
+				.collect(Collectors.toList());
+
 		if (list.isEmpty())
 			return;
 

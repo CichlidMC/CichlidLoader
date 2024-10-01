@@ -12,7 +12,7 @@ import java.util.Date;
 import io.github.cichlidmc.cichlid.impl.CichlidPaths;
 import io.github.cichlidmc.cichlid.impl.logging.CichlidLogger;
 
-public record FallbackLoggerImpl(String name) implements CichlidLogger {
+public class FallbackLoggerImpl implements CichlidLogger {
 	private static final Path file = CichlidPaths.ROOT.resolve("log.txt");
 	private static final String format = "[%s] [%s] [%s] [%s]: %s";
 	private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
@@ -24,6 +24,12 @@ public record FallbackLoggerImpl(String name) implements CichlidLogger {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private final String name;
+
+	public FallbackLoggerImpl(String name) {
+		this.name = name;
 	}
 
 	@Override
@@ -55,10 +61,11 @@ public record FallbackLoggerImpl(String name) implements CichlidLogger {
 	private void write(String level, String message) {
 		String time = timeFormat.format(new Date());
 		String thread = Thread.currentThread().getName();
-		String formatted = format.formatted(time, thread, this.name, level, message);
+		String formatted = String.format(format, time, thread, this.name, level, message);
 		System.out.println(formatted);
 		try {
-			Files.writeString(file, formatted + '\n', StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+			byte[] bytes = (formatted + '\n').getBytes();
+			Files.write(file, bytes, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

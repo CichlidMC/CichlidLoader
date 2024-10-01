@@ -44,9 +44,13 @@ public class CichlidAgent {
 		logger.printThrowable(t);
 	}
 
-	private record CatastropheLogger(PrintStream console, PrintStream log) {
+	private static class CatastropheLogger {
+		private final PrintStream console;
+		private final PrintStream log;
+
 		private CatastropheLogger(Consumer<Throwable> suppressedErrors) {
-			this(System.err, new PrintStream(getLogOutputStream(suppressedErrors)));
+			this.console = System.err;
+			this.log = new PrintStream(getLogOutputStream(suppressedErrors));
 		}
 
 		private void println(String s) {

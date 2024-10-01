@@ -34,9 +34,10 @@ public class ModMetadataImpl extends MetadataImpl implements ModMetadata {
 	}
 
 	public static ModMetadata fromJson(JsonElement element) throws JsonSyntaxException {
-		if (!(element instanceof JsonObject json))
+		if (!(element instanceof JsonObject))
 			throw new JsonSyntaxException("Not an object");
 
+		JsonObject json = element.getAsJsonObject();
 		Metadata metadata = MetadataImpl.fromJson(json);
 		Entrypoints entrypoints = EntrypointsImpl.fromJson(json.get("entrypoints"));
 

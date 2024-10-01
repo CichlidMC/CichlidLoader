@@ -1,6 +1,5 @@
 package io.github.cichlidmc.cichlid.impl.loadable;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,8 +12,14 @@ import com.google.gson.JsonSyntaxException;
 import io.github.cichlidmc.cichlid.api.Credits;
 import io.github.cichlidmc.cichlid.impl.util.JsonUtils;
 
-public record CreditsImpl(Map<String, String> map) implements Credits {
-	public static final Credits EMPTY = new CreditsImpl(Map.of());
+public final class CreditsImpl implements Credits {
+	public static final Credits EMPTY = new CreditsImpl(Collections.emptyMap());
+
+	private final Map<String, String> map;
+
+	public CreditsImpl(Map<String, String> map) {
+		this.map = map;
+	}
 
 	@Override
 	public String get(String name) {
@@ -40,9 +45,10 @@ public record CreditsImpl(Map<String, String> map) implements Credits {
 		if (element == null)
 			return EMPTY;
 
-		if (!(element instanceof JsonObject json))
+		if (!(element instanceof JsonObject))
 			throw new JsonSyntaxException("Not an object: " + element);
 
+		JsonObject json = element.getAsJsonObject();
 		Map<String, String> map = new LinkedHashMap<>(); // maintain order
 		json.keySet().forEach(key -> map.put(key, JsonUtils.getString(json, key)));
 		return new CreditsImpl(map);

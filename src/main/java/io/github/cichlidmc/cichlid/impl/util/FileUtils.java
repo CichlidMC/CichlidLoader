@@ -27,7 +27,7 @@ public class FileUtils {
 	}
 
 	public static FileVisitor<Path> fileWalker(FileConsumer consumer) {
-		return new SimpleFileVisitor<>() {
+		return new SimpleFileVisitor<Path>() {
 			@Override
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 				consumer.accept(file);

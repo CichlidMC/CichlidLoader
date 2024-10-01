@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -78,12 +79,14 @@ public class CichlidLoaderImpl {
 		logLoadedList(pluginList, "plugin", LoadablePlugin::metadata);
 		plugins = IdentifiedSet.from(pluginList, LoadablePlugin::metadata, Metadata::id);
 		// do the loading
-		List<PluginHolder> loadedPlugins = pluginList.stream().map(loadable -> loadable.load(instrumentation)).toList();
+		List<PluginHolder> loadedPlugins = pluginList.stream()
+				.map(loadable -> loadable.load(instrumentation))
+				.collect(Collectors.toList());
 
 		// find mods to load
 		List<LoadableMod> modList = ModDiscovery.find(loadedPlugins);
-		logLoadedList(modList, "mod", mod -> mod.mod().metadata());
-		mods = IdentifiedSet.from(modList, LoadableMod::mod, mod -> mod.metadata().id());
+		logLoadedList(modList, "mod", mod -> mod.mod.metadata());
+		mods = IdentifiedSet.from(modList, mod -> mod.mod, mod -> mod.metadata().id());
 		modList.forEach(mod -> mod.load(instrumentation));
 
 		initialized = true;
@@ -95,18 +98,16 @@ public class CichlidLoaderImpl {
 	}
 
 	private static <T> void logLoadedList(List<T> list, String name, Function<T, Metadata> metadata) {
-		switch (list.size()) {
-			case 0 -> logger.info("Loading 0 " + name + "s.");
-			case 1 -> {
-				String id = metadata.apply(list.get(0)).id();
-				logger.info("Loading 1 " + name + ": " + id);
-			}
-			default -> {
-				logger.info("Loading " + list.size() + ' ' + name + "s:");
-				for (T t : list) {
-					String id = metadata.apply(t).id();
-					logger.info("\t- " + id);
-				}
+		if (list.isEmpty()) {
+			logger.info("Loading 0 " + name + "s.");
+		} else if (list.size() == 1) {
+			String id = metadata.apply(list.get(0)).id();
+			logger.info("Loading 1 " + name + ": " + id);
+		} else {
+			logger.info("Loading " + list.size() + ' ' + name + "s:");
+			for (T t : list) {
+				String id = metadata.apply(t).id();
+				logger.info("\t- " + id);
 			}
 		}
 	}

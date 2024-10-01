@@ -76,7 +76,7 @@ public class StandardJarPlugin implements CichlidPlugin {
 			this.root = new Lazy<>(() -> {
 				try {
 					//noinspection resource - intentionally left open
-					FileSystem fs = FileSystems.newFileSystem(file);
+					FileSystem fs = FileSystems.newFileSystem(file, null);
 					// jar should always have exactly 1 root
 					Path root = fs.getRootDirectories().iterator().next();
 					return Optional.of(root);

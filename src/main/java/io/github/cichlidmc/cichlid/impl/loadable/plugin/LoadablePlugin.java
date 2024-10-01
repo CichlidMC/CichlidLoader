@@ -13,10 +13,16 @@ public interface LoadablePlugin {
 
 	PluginHolder load(Instrumentation instrumentation);
 
-	record BuiltIn(PluginHolder holder) implements LoadablePlugin {
+	class BuiltIn implements LoadablePlugin {
+		public final PluginHolder holder;
+
+		public BuiltIn(PluginHolder holder) {
+			this.holder = holder;
+		}
+
 		@Override
 		public PluginMetadata metadata() {
-			return this.holder.metadata();
+			return this.holder.metadata;
 		}
 
 		@Override
@@ -25,7 +31,15 @@ public interface LoadablePlugin {
 		}
 	}
 
-	record Jar(PluginMetadata metadata, JarFile jar) implements LoadablePlugin {
+	class Jar implements LoadablePlugin {
+		public final PluginMetadata metadata;
+		public final JarFile jar;
+
+		public Jar(PluginMetadata metadata, JarFile jar) {
+			this.metadata = metadata;
+			this.jar = jar;
+		}
+
 		@Override
 		public PluginMetadata metadata() {
 			return this.metadata;

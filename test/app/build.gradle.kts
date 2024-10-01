@@ -42,7 +42,7 @@ tasks.named("run", JavaExec::class) {
 
     // add agents to jvm args
     agent.files.forEach {
-        val arg = "-javaagent:\"agents/${it.name}\""
+        val arg = "-javaagent:agents/${it.name}"
         jvmArgs(arg)
     }
 
