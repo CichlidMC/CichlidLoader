@@ -28,11 +28,10 @@ import io.github.cichlidmc.cichlid.impl.util.IdentifiedSet;
 public class CichlidLoaderImpl {
 	private static final CichlidLogger logger = CichlidLogger.get("Cichlid");
 
+	private static boolean initialized;
 	private static Metadata metadata;
 	private static IdentifiedSet<Metadata> plugins;
 	private static IdentifiedSet<Mod> mods;
-
-	private static boolean initialized;
 
 	public static Set<Mod> mods() {
 		Objects.requireNonNull(mods, "Mods are not loaded yet");

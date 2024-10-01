@@ -2,12 +2,12 @@ package io.github.cichlidmc.cichlid.impl.logging;
 
 import java.util.function.Function;
 
-import io.github.cichlidmc.cichlid.api.CichlidInternals;
 import io.github.cichlidmc.cichlid.impl.logging.impl.Log4jLoggerImpl;
 import io.github.cichlidmc.cichlid.impl.logging.impl.FallbackLoggerImpl;
+import io.github.cichlidmc.cichlid.impl.util.Utils;
 
 public interface CichlidLogger {
-	Function<String, CichlidLogger> FACTORY = CichlidInternals.make(() -> {
+	Function<String, CichlidLogger> FACTORY = Utils.make(() -> {
 		try {
 			new Log4jLoggerImpl("probe");
 			return Log4jLoggerImpl::new;
