@@ -6,15 +6,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 import io.github.cichlidmc.cichlid.api.Credits;
-import io.github.cichlidmc.cichlid.impl.util.JsonUtils;
+import io.github.cichlidmc.tinyjson.value.JsonValue;
+import org.jetbrains.annotations.Nullable;
 
 public final class CreditsImpl implements Credits {
-	public static final Credits EMPTY = new CreditsImpl(Collections.emptyMap());
-
 	private final Map<String, String> map;
 
 	public CreditsImpl(Map<String, String> map) {
@@ -41,16 +37,12 @@ public final class CreditsImpl implements Credits {
 		return this.map.isEmpty();
 	}
 
-	public static Credits fromJson(JsonElement element) {
-		if (element == null)
+	public static Credits fromJson(@Nullable JsonValue value) {
+		if (value == null)
 			return EMPTY;
 
-		if (!(element instanceof JsonObject))
-			throw new JsonSyntaxException("Not an object: " + element);
-
-		JsonObject json = element.getAsJsonObject();
 		Map<String, String> map = new LinkedHashMap<>(); // maintain order
-		json.keySet().forEach(key -> map.put(key, JsonUtils.getString(json, key)));
+		value.asObject().forEach((k, v) -> map.put(k, v.asString().value()));
 		return new CreditsImpl(map);
 	}
 }

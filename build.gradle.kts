@@ -8,8 +8,11 @@ base.archivesName = "Cichlid"
 group = "io.github.cichlidmc"
 version = properties["version"]!!
 
-repositories {
-    mavenCentral()
+allprojects {
+    repositories {
+        mavenCentral()
+        maven("https://mvn.devos.one/snapshots/")
+    }
 }
 
 // configuration for shadowed dependencies
@@ -19,7 +22,7 @@ val shade: Configuration by configurations.creating {
 
 dependencies {
     compileOnlyApi("org.jetbrains:annotations:24.1.0")
-    shade(api("com.google.code.gson:gson:2.11.0")!!)
+    shade(api("io.github.cichlidmc:TinyJson:1.0.1")!!)
     compileOnly("org.apache.logging.log4j:log4j-api:2.23.1")
 }
 
@@ -55,13 +58,6 @@ tasks.named("shadowJar", com.github.jengelman.gradle.plugins.shadow.tasks.Shadow
 
     // exclude signatures and manifest of dependencies
     exclude("META-INF/**")
-
-    relocate("com.google", "io.github.cichlidmc.cichlid.impl.shadow.google")
-
-    minimize {
-        // api dependencies are automatically excluded
-        include(dependency("com.google.code.gson:gson:.*"))
-    }
 }
 
 tasks.register<Jar>("apiJar") {

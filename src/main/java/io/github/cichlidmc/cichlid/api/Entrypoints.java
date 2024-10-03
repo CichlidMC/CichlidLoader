@@ -1,5 +1,8 @@
 package io.github.cichlidmc.cichlid.api;
 
+import io.github.cichlidmc.cichlid.impl.loadable.mod.EntrypointsImpl;
+
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -9,6 +12,8 @@ import java.util.List;
  * Each entrypoint is handled uniquely, but typically the class will be instantiated and a method will be invoked.
  */
 public interface Entrypoints {
+	Entrypoints EMPTY = new EntrypointsImpl(Collections.emptyMap());
+
 	/**
 	 * Get the entrypoints for the given key.
 	 * <br>

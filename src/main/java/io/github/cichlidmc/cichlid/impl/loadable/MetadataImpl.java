@@ -1,9 +1,8 @@
 package io.github.cichlidmc.cichlid.impl.loadable;
 
-import com.google.gson.JsonObject;
 import io.github.cichlidmc.cichlid.api.Credits;
 import io.github.cichlidmc.cichlid.api.Metadata;
-import io.github.cichlidmc.cichlid.impl.util.JsonUtils;
+import io.github.cichlidmc.tinyjson.value.composite.JsonObject;
 
 public class MetadataImpl implements Metadata {
 	private final String id;
@@ -49,11 +48,11 @@ public class MetadataImpl implements Metadata {
 	}
 
 	public static Metadata fromJson(JsonObject json) {
-		String id = JsonUtils.getString(json, "id");
-		String name = JsonUtils.getString(json, "name");
-		String version = JsonUtils.getString(json, "version");
-		String description = JsonUtils.getString(json, "description");
-		Credits credits = CreditsImpl.fromJson(json.get("credits"));
+		String id = json.get("id").asString().value();
+		String name = json.get("name").asString().value();
+		String version = json.get("version").asString().value();
+		String description = json.get("description").asString().value();
+		Credits credits = CreditsImpl.fromJson(json.getNullable("credits"));
 		return new MetadataImpl(id, name, version, description, credits);
 	}
 }

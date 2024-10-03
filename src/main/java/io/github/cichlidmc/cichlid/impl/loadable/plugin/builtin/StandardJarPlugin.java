@@ -23,6 +23,8 @@ import io.github.cichlidmc.cichlid.impl.loadable.plugin.PluginHolder;
 import io.github.cichlidmc.cichlid.impl.loadable.plugin.PluginMetadataImpl;
 import io.github.cichlidmc.cichlid.impl.util.FileUtils;
 import io.github.cichlidmc.cichlid.impl.util.Lazy;
+import io.github.cichlidmc.tinyjson.TinyJson;
+import io.github.cichlidmc.tinyjson.value.JsonValue;
 
 public class StandardJarPlugin implements CichlidPlugin {
 	public static final String EXTENSION = ".cld";
@@ -58,7 +60,8 @@ public class StandardJarPlugin implements CichlidPlugin {
 				return null;
 
 			InputStream stream = jar.getInputStream(metadataEntry);
-			ModMetadata metadata = ModMetadata.fromJson(stream);
+			JsonValue json = TinyJson.parse(stream);
+			ModMetadata metadata = ModMetadata.fromJson(json);
 
 			Mod mod = new JarModImpl(metadata, path);
 			return new LoadableMod(mod, path.toString(), jar);

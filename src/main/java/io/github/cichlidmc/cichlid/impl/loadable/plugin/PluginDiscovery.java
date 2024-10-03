@@ -1,7 +1,6 @@
 package io.github.cichlidmc.cichlid.impl.loadable.plugin;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -10,13 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarFile;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
 import io.github.cichlidmc.cichlid.impl.CichlidPaths;
 import io.github.cichlidmc.cichlid.api.plugin.PluginMetadata;
 import io.github.cichlidmc.cichlid.impl.loadable.plugin.builtin.StandardJarPlugin;
 import io.github.cichlidmc.cichlid.impl.util.FileUtils;
+import io.github.cichlidmc.tinyjson.JsonException;
 
 public class PluginDiscovery {
 	public static final String EXTENSION = ".clp";
@@ -51,12 +48,10 @@ public class PluginDiscovery {
 				throw new InvalidPluginException(name, "Metadata not found");
 			}
 
-			InputStreamReader reader = new InputStreamReader(Files.newInputStream(metadataFile));
-			JsonElement json = JsonParser.parseReader(reader);
-			PluginMetadata metadata = PluginMetadataImpl.fromJson(json);
+			PluginMetadata metadata = PluginMetadataImpl.fromJsonFile(metadataFile);
 			JarFile jar = new JarFile(path.toFile());
 			plugins.add(new LoadablePlugin.Jar(metadata, jar));
-		} catch (JsonSyntaxException e) {
+		} catch (JsonException e) {
 			throw new InvalidPluginException(name, "Invalid metadata", e);
 		}
 	}

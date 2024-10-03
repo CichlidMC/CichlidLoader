@@ -1,13 +1,13 @@
 package io.github.cichlidmc.cichlid.impl.loadable.plugin;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 import io.github.cichlidmc.cichlid.impl.loadable.MetadataImpl;
 import io.github.cichlidmc.cichlid.api.plugin.PluginMetadata;
 import io.github.cichlidmc.cichlid.api.Credits;
 import io.github.cichlidmc.cichlid.api.Metadata;
-import io.github.cichlidmc.cichlid.impl.util.JsonUtils;
+import io.github.cichlidmc.tinyjson.TinyJson;
+import io.github.cichlidmc.tinyjson.value.composite.JsonObject;
+
+import java.nio.file.Path;
 
 public class PluginMetadataImpl extends MetadataImpl implements PluginMetadata {
 	private final String pluginClass;
@@ -26,13 +26,11 @@ public class PluginMetadataImpl extends MetadataImpl implements PluginMetadata {
 		return this.pluginClass;
 	}
 
-	public static PluginMetadata fromJson(JsonElement element) throws JsonSyntaxException {
-		if (!(element instanceof JsonObject))
-			throw new JsonSyntaxException("Not an object");
+	public static PluginMetadata fromJsonFile(Path file) {
+		JsonObject json = TinyJson.parseOrThrow(file).asObject();
 
-		JsonObject json = element.getAsJsonObject();
 		Metadata metadata = MetadataImpl.fromJson(json);
-		String pluginClass = JsonUtils.getString(json, "plugin_class");
+		String pluginClass = json.get("plugin_class").asString().value();
 
 		return new PluginMetadataImpl(metadata, pluginClass);
 	}

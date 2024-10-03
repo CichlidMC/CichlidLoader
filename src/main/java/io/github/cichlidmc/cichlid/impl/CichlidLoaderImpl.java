@@ -1,7 +1,6 @@
 package io.github.cichlidmc.cichlid.impl;
 
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.instrument.Instrumentation;
 import java.util.List;
 import java.util.Objects;
@@ -10,9 +9,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
 import io.github.cichlidmc.cichlid.api.plugin.LoadableMod;
 import io.github.cichlidmc.cichlid.impl.loadable.mod.ModDiscovery;
 import io.github.cichlidmc.cichlid.api.Metadata;
@@ -23,8 +19,8 @@ import io.github.cichlidmc.cichlid.impl.loadable.plugin.PluginHolder;
 import io.github.cichlidmc.cichlid.impl.logging.CichlidLogger;
 import io.github.cichlidmc.cichlid.api.Mod;
 import io.github.cichlidmc.cichlid.impl.loadable.plugin.PluginDiscovery;
-import io.github.cichlidmc.cichlid.impl.util.JsonUtils;
 import io.github.cichlidmc.cichlid.impl.util.IdentifiedSet;
+import io.github.cichlidmc.tinyjson.TinyJson;
 
 public class CichlidLoaderImpl {
 	private static final CichlidLogger logger = CichlidLogger.get("Cichlid");
@@ -118,12 +114,7 @@ public class CichlidLoaderImpl {
 			throw new IllegalStateException("Cichlid metadata is missing");
 		}
 
-		try {
-			JsonObject json = JsonParser.parseReader(new InputStreamReader(stream)).getAsJsonObject();
-			String version = JsonUtils.getString(json, "version");
-			return new CichlidMetadata(version);
-		} catch (JsonSyntaxException | IllegalStateException e) {
-			throw new IllegalStateException("Cichlid metadata is invalid", e);
-		}
+		String version = TinyJson.parseOrThrow(stream).asObject().get("version").asString().value();
+		return new CichlidMetadata(version);
 	}
 }

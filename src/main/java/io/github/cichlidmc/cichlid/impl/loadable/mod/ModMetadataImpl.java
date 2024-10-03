@@ -1,20 +1,12 @@
 package io.github.cichlidmc.cichlid.impl.loadable.mod;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
 import io.github.cichlidmc.cichlid.api.Entrypoints;
 import io.github.cichlidmc.cichlid.api.ModMetadata;
 import io.github.cichlidmc.cichlid.api.Credits;
 import io.github.cichlidmc.cichlid.api.Metadata;
 import io.github.cichlidmc.cichlid.impl.loadable.MetadataImpl;
+import io.github.cichlidmc.tinyjson.value.JsonValue;
+import io.github.cichlidmc.tinyjson.value.composite.JsonObject;
 
 public class ModMetadataImpl extends MetadataImpl implements ModMetadata {
 	private final Entrypoints entrypoints;
@@ -33,27 +25,11 @@ public class ModMetadataImpl extends MetadataImpl implements ModMetadata {
 		return this.entrypoints;
 	}
 
-	public static ModMetadata fromJson(JsonElement element) throws JsonSyntaxException {
-		if (!(element instanceof JsonObject))
-			throw new JsonSyntaxException("Not an object");
-
-		JsonObject json = element.getAsJsonObject();
+	public static ModMetadata fromJson(JsonValue value) {
+		JsonObject json = value.asObject();
 		Metadata metadata = MetadataImpl.fromJson(json);
-		Entrypoints entrypoints = EntrypointsImpl.fromJson(json.get("entrypoints"));
+		Entrypoints entrypoints = EntrypointsImpl.fromJson(json.getNullable("entrypoints"));
 
 		return new ModMetadataImpl(metadata, entrypoints);
-	}
-
-	public static ModMetadata fromJson(Path file) {
-		try (InputStream stream = Files.newInputStream(file)) {
-			JsonElement json = JsonParser.parseReader(new InputStreamReader(stream));
-			return fromJson(json);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static ModMetadata fromJson(InputStream stream) {
-		return fromJson(JsonParser.parseReader(new InputStreamReader(stream)));
 	}
 }
