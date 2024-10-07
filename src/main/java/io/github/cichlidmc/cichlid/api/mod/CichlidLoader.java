@@ -5,7 +5,9 @@ import java.util.Set;
 
 import io.github.cichlidmc.cichlid.api.Metadata;
 import io.github.cichlidmc.cichlid.api.Mod;
+import io.github.cichlidmc.cichlid.api.mod.transformer.CichlidTransformer;
 import io.github.cichlidmc.cichlid.impl.CichlidLoaderImpl;
+import io.github.cichlidmc.cichlid.impl.CichlidTransformerManager;
 
 /**
  * Main loader API usable by mods.
@@ -51,5 +53,19 @@ public final class CichlidLoader {
 	 */
 	public static Metadata metadata() {
 		return CichlidLoaderImpl.metadata();
+	}
+
+	/**
+	 * The current environment Cichlid is loaded in.
+	 */
+	public static String environment() {
+		return CichlidLoaderImpl.environment();
+	}
+
+	/**
+	 * Register a new transformer. The transformer will be invoked for all classes going forward.
+	 */
+	public static void registerTransformer(CichlidTransformer transformer) {
+		CichlidTransformerManager.registerTransformer(transformer);
 	}
 }

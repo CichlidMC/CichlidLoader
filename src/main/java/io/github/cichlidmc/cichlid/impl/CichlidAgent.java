@@ -7,6 +7,7 @@ import java.lang.instrument.Instrumentation;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 import io.github.cichlidmc.cichlid.impl.logging.CichlidLogger;

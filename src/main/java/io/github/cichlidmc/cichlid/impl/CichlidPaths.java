@@ -7,4 +7,5 @@ public class CichlidPaths {
 	public static final Path ROOT = Paths.get("").resolve("cichlid");
 	public static final Path MODS = ROOT.resolve("mods");
 	public static final Path PLUGINS = ROOT.resolve("plugins");
+	public static final Path META = ROOT.resolve("meta");
 }

@@ -29,6 +29,7 @@ public class CichlidLoaderImpl {
 	private static Metadata metadata;
 	private static IdentifiedSet<Metadata> plugins;
 	private static IdentifiedSet<Mod> mods;
+	private static InstanceMeta instanceMeta;
 
 	public static Set<Mod> mods() {
 		Objects.requireNonNull(mods, "Mods are not loaded yet");
@@ -55,6 +56,10 @@ public class CichlidLoaderImpl {
 		return Optional.ofNullable(plugins.get(id));
 	}
 
+	public static String environment() {
+		return Objects.requireNonNull(instanceMeta, "Instance meta is not loaded yet").environment;
+	}
+
 	public static Metadata metadata() {
 		return Objects.requireNonNull(metadata, "Cichlid metadata is not loaded yet");
 	}
@@ -68,7 +73,8 @@ public class CichlidLoaderImpl {
 		metadata = loadMetadata();
 		logger.info("Cichlid version: " + metadata.version());
 
-		instrumentation.addTransformer(new CichlidTransformer());
+		instanceMeta = InstanceMeta.read();
+		instrumentation.addTransformer(CichlidTransformerManager.INSTANCE);
 
 		// find plugins to load
 		List<LoadablePlugin> pluginList = PluginDiscovery.find();
