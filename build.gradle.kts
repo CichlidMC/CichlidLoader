@@ -25,6 +25,13 @@ dependencies {
     shade(api("io.github.cichlidmc:TinyJson:1.0.1")!!)
     shade(api("org.ow2.asm:asm-tree:9.7")!!)
     compileOnly("org.apache.logging.log4j:log4j-api:2.23.1")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+}
+
+tasks.named<Test>("test") {
+    useJUnitPlatform()
 }
 
 tasks.named("processResources", ProcessResources::class) {

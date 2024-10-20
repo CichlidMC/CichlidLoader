@@ -78,8 +78,8 @@ public class StandardJarPlugin implements CichlidPlugin {
 			this.metadata = metadata;
 			this.root = new Lazy<>(() -> {
 				try {
-					//noinspection resource - intentionally left open
-					FileSystem fs = FileSystems.newFileSystem(file, null);
+					//noinspection resource, RedundantCast - intentionally left open, javac fails without cast
+					FileSystem fs = FileSystems.newFileSystem(file, (ClassLoader) null);
 					// jar should always have exactly 1 root
 					Path root = fs.getRootDirectories().iterator().next();
 					return Optional.of(root);

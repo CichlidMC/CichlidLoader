@@ -42,7 +42,8 @@ public class PluginDiscovery {
 			throw new InvalidPluginException(name, "Not a plugin");
 		}
 
-		try (FileSystem fs = FileSystems.newFileSystem(path, null)) {
+		// noinspection RedundantCast - IDEA lies, javac fails
+		try (FileSystem fs = FileSystems.newFileSystem(path, (ClassLoader) null)) {
 			Path metadataFile = fs.getPath(METADATA);
 			if (!Files.exists(metadataFile)) {
 				throw new InvalidPluginException(name, "Metadata not found");
